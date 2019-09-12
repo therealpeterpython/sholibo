@@ -141,8 +141,12 @@ def image(bot, update, args):
                 bot.send_photo(chat_id=chat_id, photo=open(path, 'rb'))
             else:
                 bot.send_message(chat_id=chat_id, text="Cant find an image for '"+items[int(i)]+"' you  :(")
-        except IndexError:
-            pass
+        except UnicodeDecodeError:
+                bot.send_message(chat_id=chat_id, text="Umlauts for images are not supported yet!")
+                raise
+        except ValueError:
+                bot.send_message(chat_id=chat_id, text="You have to input the item number!")
+                raise
 
 
 def all_images(bot, update):
