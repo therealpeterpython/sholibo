@@ -2,8 +2,8 @@
 The python bot.
 It gets the commands from the chats and processes them. As data structure is uses the
 ShoppingList class. To get the images it imports google_images_download. If you
-encounter any problems please visit my pull request
-https://github.com/hardikvasa/google-images-download/pull/265.
+encounter any problems please visit my fork
+https://github.com/therealpeterpython/google-images-download.
 
 therealpeterpython - 47575127+therealpeterpython@users.noreply.github.com
 2019
