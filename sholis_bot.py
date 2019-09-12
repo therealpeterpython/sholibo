@@ -137,11 +137,11 @@ def image(bot, update, args):
     for arg in args:
         try:
             arg = items[int(arg)]
-            path = downloadimages(arg)
         except ValueError:
-            path = downloadimages(arg)
+            pass
 
         try:
+            path = downloadimages(arg)
             if path:
                 bot.send_message(chat_id=chat_id, text=arg)
                 bot.send_photo(chat_id=chat_id, photo=open(path, 'rb'))
