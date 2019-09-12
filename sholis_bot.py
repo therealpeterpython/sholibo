@@ -130,17 +130,18 @@ def view_times(bot, update):
         bot.send_message(chat_id=chat_id, text="There are no elements in your list!")
 
 
-# Download an image 
+# Download an image
 def image(bot, update, args):
     chat_id = update.message.chat_id
     items = load(bot, chat_id).get_items()
     for arg in args:
         try:
-            if isinstance(arg, int):
-                arg = items[int(arg)]
-                path = downloadimages(arg)
-            else:
-                path = downloadimages(arg)
+            arg = items[int(arg)]
+            path = downloadimages(arg)
+        except ValueError:
+            path = downloadimages(arg)
+
+        try:
             if path:
                 bot.send_message(chat_id=chat_id, text=arg)
                 bot.send_photo(chat_id=chat_id, photo=open(path, 'rb'))
