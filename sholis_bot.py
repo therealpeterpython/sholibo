@@ -137,14 +137,15 @@ def image(bot, update, args):
     for arg in args:
         try:
             if isinstance(arg, int):
-                path = downloadimages(items[int(i)])
+                arg = items[int(arg)]
+                path = downloadimages(arg)
             else:
                 path = downloadimages(arg)
             if path:
-                bot.send_message(chat_id=chat_id, text=items[int(i)])
+                bot.send_message(chat_id=chat_id, text=arg)
                 bot.send_photo(chat_id=chat_id, photo=open(path, 'rb'))
             else:
-                bot.send_message(chat_id=chat_id, text="Cant find an image for '"+items[int(i)]+"' you  :(")
+                bot.send_message(chat_id=chat_id, text="Cant find an image for '{}' you  :(".format(arg))
         except UnicodeDecodeError:
                 bot.send_message(chat_id=chat_id, text="Umlauts for images are not supported yet!")
                 raise
