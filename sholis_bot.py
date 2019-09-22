@@ -69,15 +69,18 @@ def start(bot, update):
 
 
 # Add on or more comma or newline seperated items
-def add_item(bot, update, args):
+def add_item(bot, update):
     print("add_item chat_id: {}".format(update.message.chat_id))
     chat_id = update.message.chat_id
-    items = " ".join(args)
-    items = [item.strip() for item in items.replace("\n", ",").split(",") if item.strip()]  # convert newline to comma and split
-    if not items:  # if there are no items
+    text = update.message.text
+    try:
+        items = text[text.index(" ")+1:]
+    except ValueError:
         msg = "There was no item to add!"
         bot.send_message(chat_id=chat_id, text=msg)
         return
+    items = [item.strip() for item in items.replace("\n", ",").split(",") if item.strip()]  # convert newline to comma and split
+
     slist = load(bot, chat_id)
     slist.add_items(items)
     save(chat_id, slist)
