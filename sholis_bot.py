@@ -80,7 +80,10 @@ def add_item(bot, update):
         bot.send_message(chat_id=chat_id, text=msg)
         return
     items = [item.strip() for item in items.replace("\n", ",").split(",") if item.strip()]  # convert newline to comma and split
-
+    if not items:
+        msg = "There was no item to add!"
+        bot.send_message(chat_id=chat_id, text=msg)
+        return
     slist = load(bot, chat_id)
     slist.add_items(items)
     save(chat_id, slist)
