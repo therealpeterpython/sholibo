@@ -23,7 +23,8 @@ config = {"path_lists": "./shopping_lists", "path_images":"./images", "path_toke
 
 
 # Download an image
-def downloadimages(query):
+def download_images(query):
+    print("download_images")
     arguments = {"keywords": query,
                  "limit":1,
                  "thumbnail_only": True,
@@ -37,8 +38,9 @@ def downloadimages(query):
         pass
 
 
-# Load a shopping list
+# Load or create a shopping list
 def load(bot, chat_id):
+    print("load chat_id: {}".format(chat_id))
     load_path = os.path.join(config["path_lists"], str(chat_id))
     if not os.path.isfile(load_path):   # create or load?
         slist = ShoppingList()
@@ -48,12 +50,12 @@ def load(bot, chat_id):
     else:
         with open(load_path, "rb") as fp:
             slist = pickle.load(fp)
-
     return slist
 
 
 # Save a shopping list
 def save(chat_id, slist):
+    print("save chat_id: {}".format(chat_id))
     os.makedirs(config["path_lists"], exist_ok=True)
     save_path = os.path.join(config["path_lists"], str(chat_id))
     with open(save_path, "wb") as fp:
@@ -62,27 +64,31 @@ def save(chat_id, slist):
 
 # Start the bot
 def start(bot, update):
+    print("start chat_id: {}".format(update.message.chat_id))
     help(bot, update)
 
 
-# Add an item
+# Add on or more comma or newline seperated items
 def add_item(bot, update, args):
+    print("add_item chat_id: {}".format(update.message.chat_id))
     chat_id = update.message.chat_id
-    item = " ".join(args)
-    if not item.strip():
+    items = " ".join(args)
+    items = [item.strip() for item in items.replace("\n", ",").split(",") if item.strip()]  # convert newline to comma and split
+    if not items:  # if there are no items
         msg = "There was no item to add!"
         bot.send_message(chat_id=chat_id, text=msg)
         return
     slist = load(bot, chat_id)
-    slist.add_item(item)
+    slist.add_items(items)
     save(chat_id, slist)
 
-    msg = "I've added that item for you!"
+    msg = "I've added the items for you!"
     bot.send_message(chat_id=chat_id, text=msg)
 
 
 # Remove an item
 def remove_item(bot, update, args):
+    print("remove_item chat_id: {}".format(update.message.chat_id))
     chat_id = update.message.chat_id
     slist = load(bot, chat_id)
     for i in args:
@@ -98,6 +104,7 @@ def remove_item(bot, update, args):
 
 # Remove all items
 def remove_all(bot, update, args):
+    print("remove_all chat_id: {}".format(update.message.chat_id))
     chat_id = update.message.chat_id
     if len(args) == 1 and args[0] == "clear":
         slist = load(bot, chat_id)
@@ -112,6 +119,7 @@ def remove_all(bot, update, args):
 
 # Show the list
 def view_list(bot, update):
+    print("view_list chat_id: {}".format(update.message.chat_id))
     chat_id = update.message.chat_id
     slist = load(bot, chat_id)
     if not slist.empty():
@@ -122,6 +130,7 @@ def view_list(bot, update):
 
 # Show the list with timestamps
 def view_times(bot, update):
+    print("view_times chat_id: {}".format(update.message.chat_id))
     chat_id = update.message.chat_id
     slist = load(bot, chat_id)
     if not slist.empty():
@@ -132,6 +141,7 @@ def view_times(bot, update):
 
 # Download an image
 def image(bot, update, args):
+    print("image chat_id: {}".format(update.message.chat_id))
     chat_id = update.message.chat_id
     items = load(bot, chat_id).get_items()
     for arg in args:
@@ -141,7 +151,7 @@ def image(bot, update, args):
             pass
 
         try:
-            path = downloadimages(arg)
+            path = download_images(arg)
             if path:
                 bot.send_message(chat_id=chat_id, text=arg)
                 bot.send_photo(chat_id=chat_id, photo=open(path, 'rb'))
@@ -153,6 +163,7 @@ def image(bot, update, args):
 
 
 def all_images(bot, update):
+    print("all_images chat_id: {}".format(update.message.chat_id))
     chat_id = update.message.chat_id
     items = load(bot, chat_id).get_items()
     image(bot, update, list(range(len(items))))
@@ -160,6 +171,7 @@ def all_images(bot, update):
 
 # Writes the help
 def help(bot, update):
+    print("help chat_id: {}".format(update.message.chat_id))
     help_msg = 'I am your shopping list bot: Sholibo!\n'
     help_msg += 'There are six commands to control me:\n'
 
