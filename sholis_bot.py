@@ -204,7 +204,7 @@ def main():
 
     # Add handler
     dispatcher.add_handler(CommandHandler('start', start))
-    dispatcher.add_handler(CommandHandler('add', add_item, pass_args=True))
+    dispatcher.add_handler(CommandHandler('add', add_item))
     dispatcher.add_handler(CommandHandler('list', view_list))
     dispatcher.add_handler(CommandHandler('times', view_times))
     dispatcher.add_handler(CommandHandler('remove', remove_item, pass_args=True))
