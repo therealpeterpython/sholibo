@@ -181,7 +181,7 @@ def help(bot, update):
     help_msg = 'I am your shopping list bot: Sholibo!\n'
     help_msg += 'There are six commands to control me:\n'
 
-    help_msg += '(1) With /add <name> you can add items to your list,\n'
+    help_msg += '(1) With /add <name> you can add multiple comma or newline seperated items to your list,\n'
     help_msg += '(2) With /list you get an enumeration of your items,\n'
     help_msg += '(3) With /remove <number> you can remove items of your list,\n'
     help_msg += '(4) With /clear clear you delete the full list (be carefull),\n'
