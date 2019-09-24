@@ -92,13 +92,19 @@ def add_item(bot, update):
     bot.send_message(chat_id=chat_id, text=msg)
 
 
-# Remove an item
-def remove_item(bot, update, args):
-    print("remove_item chat_id: {}".format(update.message.chat_id))
+# Remove one or more items
+def remove_items(bot, update, args):
+    print("remove_items chat_id: {}".format(update.message.chat_id))
     chat_id = update.message.chat_id
     slist = load(bot, chat_id)
-    for i in args:
-        slist.remove_item(int(i))
+    try:
+        positions = [int(index) for l in args for index in l.split(",")]  # split at commas and cast to int
+        print(positions)
+    except ValueError:
+        msg = "Please use the item ids!"
+        bot.send_message(chat_id=chat_id, text=msg)
+        return
+    slist.remove_items(positions)
     save(chat_id, slist)
 
     if not len(args):
@@ -210,7 +216,7 @@ def main():
     dispatcher.add_handler(CommandHandler('add', add_item))
     dispatcher.add_handler(CommandHandler('list', view_list))
     dispatcher.add_handler(CommandHandler('times', view_times))
-    dispatcher.add_handler(CommandHandler('remove', remove_item, pass_args=True))
+    dispatcher.add_handler(CommandHandler('remove', remove_items, pass_args=True))
     dispatcher.add_handler(CommandHandler('clear', remove_all, pass_args=True))
     dispatcher.add_handler(CommandHandler('whatis', image, pass_args=True))
     dispatcher.add_handler(CommandHandler('whatiseverything', all_images))

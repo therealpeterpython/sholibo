@@ -43,9 +43,9 @@ class ShoppingList:
         self._items.extend(items)
         self._times.extend([time for _ in range(len(items))])
         
-    def remove_item(self, pos):
-        del self._items[pos]    
-        del self._times[pos]
+    def remove_items(self, pos):
+        self._items = [item for index,item in enumerate(self._items) if not index in pos]
+        self._times = [time for index,time in enumerate(self._times) if not index in pos]
         
     def remove_all(self):
         self._items = list()
