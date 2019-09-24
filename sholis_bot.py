@@ -98,7 +98,7 @@ def remove_items(bot, update, args):
     chat_id = update.message.chat_id
     slist = load(bot, chat_id)
     try:
-        positions = [int(index) for l in args for index in l.split(",")]  # split at commas and cast to int
+        positions = [int(index) for l in args for index in l.split(",") if index]  # split at commas and cast to int
         print(positions)
     except ValueError:
         msg = "Please use the item ids!"
