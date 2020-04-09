@@ -135,7 +135,7 @@ def view_list(bot, update):
     chat_id = update.message.chat_id
     slist = load(bot, chat_id)
     if not slist.empty():
-        bot.send_message(chat_id=chat_id, text=slist.pprint_basic())
+        bot.send_message(chat_id=chat_id, text=slist.pprint_basic(), disable_web_page_preview=True)
     else:
         bot.send_message(chat_id=chat_id, text="There are no elements in your list!")
 
@@ -146,7 +146,7 @@ def view_times(bot, update):
     chat_id = update.message.chat_id
     slist = load(bot, chat_id)
     if not slist.empty():
-        bot.send_message(chat_id=chat_id, text=slist.pprint_full())
+        bot.send_message(chat_id=chat_id, text=slist.pprint_full(), disable_web_page_preview=True)
     else:
         bot.send_message(chat_id=chat_id, text="There are no elements in your list!")
 
@@ -165,7 +165,7 @@ def image(bot, update, args):
         try:
             path = download_images(arg)
             if path:
-                bot.send_message(chat_id=chat_id, text=arg)
+                bot.send_message(chat_id=chat_id, text=arg, disable_web_page_preview=True)
                 bot.send_photo(chat_id=chat_id, photo=open(path, 'rb'))
             else:
                 bot.send_message(chat_id=chat_id, text="Cant find an image for '{}' you  :(".format(arg))
